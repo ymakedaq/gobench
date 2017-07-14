@@ -1,0 +1,6 @@
+###ºöÂÔ±àÒëÎÄ¼ş
+src/cmd/cmd
+src/test/test
+*.a
+*.o
+*.exe

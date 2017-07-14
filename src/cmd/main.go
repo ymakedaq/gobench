@@ -12,6 +12,7 @@ import (
 	"path"
 	"strings"
 	//	"text/template"
+	//"sync"
 	"time"
 )
 
@@ -23,6 +24,9 @@ const (
 )
 
 func main() {
+
+	//	var TheadWait sync.WaitGroup
+
 	LOGO := `
 		压测线程数  5, 10, 15, 20, 40, 60, 80, 100, 150, 200, 300, 400, 600, 800, 1000 递进压测
 	`
@@ -68,6 +72,7 @@ func init() {
 func Newcommand(cmd string) []string {
 
 	step := []int{6, 10, 15, 20, 40, 60, 80, 100, 150, 200, 300, 400, 600, 800, 1000}
+	fmt.Println("Fllow threads", step)
 	var cmdlist []string
 	for _, v := range step {
 		cmdlist = append(cmdlist, strings.Replace(cmd, "--threads=2", fmt.Sprintf("--threads=%d", v), 1))
