@@ -50,8 +50,11 @@ func DealChain() {
 	go func() {
 		for {
 			a := <-cpuchain
-			cpufilefd.Write([]byte(fmt.Sprintln(a.Clicktime, a.cpusidle)))
-
+			cpufilefd.Write([]byte(fmt.Sprintf("%d", a.Clicktime)))
+			for _, v := range a.cpusidle {
+				cpufilefd.Write([]byte(fmt.Sprintf("%s", v)))
+			}
+			cpufilefd.Write([]byte(fmt.Sprintf("/n")))
 		}
 		defer cpufilefd.Close()
 	}()
