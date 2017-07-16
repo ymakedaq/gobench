@@ -42,6 +42,12 @@ import (
 	"strings"
 )
 
+const (
+	CPUFILE    = `./cpufile.txt`
+	MEMFILE    = `./memfile.txt`
+	resultfile = `./res.txt`
+)
+
 type Dreawhtml struct {
 	Headtitle string //html 的title
 	Ytitle    string
@@ -84,6 +90,8 @@ func main() {
 	//list := []string{"dsasda", "xiaode", "xiaoke"}
 	//tmpl.Execute(os.Stdout, list)
 	//fmt.Println(doc.String())
+
+	SysbenchCpucut()
 }
 
 func Readfile(f string) (*[]string, error) {
@@ -143,8 +151,31 @@ func SysbenchResCut(rows *[]string) (map[string]interface{}, error) {
 	return mn, nil
 }
 
+func SysbenchCpucut() {
+	var t [][]float64
+	cr, err := Readfile(CPUFILE)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	for _, v := range *cr {
+		if len(v) > 0 {
+			l := strings.Replace(strings.Replace(v, "[", "", -1), "]", "", -1)
+			for index, value := range strings.Split(l, " ") {
+				v, err := strconv.ParseFloat(value, 32)
+				if err != nil {
+					fmt.Println(err)
+					return
+				}
+				t[index] = append(t[index], v)
+			}
+		}
+	}
+}
+
 func Createhmtl(filname string, htmldat string) error {
-	fd, err := golog.NewFileHandler(filname, os.O_CREATE|os.O_RDWR|os.O_APPEND)
+	fd, err := golog.NewFileHandler(filname, os.O_CREATE|os.O_RDWR|os.O_TRUNC)
 	if err != nil {
 		golog.Error("Createhtml", "Createhtml", fmt.Sprintf("%s", err), 0)
 		return err

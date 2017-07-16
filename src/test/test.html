@@ -4,7 +4,7 @@
 <head>
   <script type="text/javascript" src="http://cdn.hcharts.cn/jquery/jquery-1.8.3.min.js"></script>
   <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
-  <script type="text/javascript" src="http://cdn.hcharts.cn/highcharts/exporting.js"></script>
+  <script type="text/javascript" src="http://img.hcharts.cn/highcharts/highcharts.js"></script>
   <script>
     $(function () {
     $('#insert').highcharts({
@@ -17,7 +17,7 @@
 
         xAxis: {
             categories:
-			[["6","10","15","20","40","60","80","100","150","200","300","400","600","800"]]
+			["6","10","15","20","40","60","80","100","150","200","300","400","600","800"]
         },
         yAxis: {
             title: {
@@ -49,15 +49,117 @@
         },
         series: [{
             name: 'tps\/s',
-            data: [[8668,12405,16269,19844,27452,28933,29327,29190,28640,25390,19479,16893,17118,14972]]
+            data: [8668,12405,16269,19844,27452,28933,29327,29190,28640,25390,19479,16893,17118,14972]
 	 		}
 		]          
     });             
 });     
+
+ $(function () {
+    $('#cpuinfo').highcharts({
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: 'oltp_read_write.lua'
+        },
+
+        xAxis: {
+            categories:
+			["6","10","15","20","40","60","80","100","150","200","300","400","600","800"]
+        },
+        yAxis: {
+            title: {
+                text: 'tps\/s'
+            },
+            labels: {
+                formatter: function() {
+                    return this.value 
+                }
+            }
+        }, 
+        credits: {   
+            text: 'Juanpi_db',
+            href: 'http://www.dbauto.org'  
+        }, 
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: ''
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    radius: 2,
+                    lineColor: '#234',
+                    lineWidth: 1
+                }
+            }
+        },
+        series: [{
+            name: 'tps\/s',
+            data: [8668,12405,16269,19844,27452,28933,29327,29190,28640,25390,19479,16893,17118,14972]
+	 		}
+		]          
+    });             
+});     
+
+ $(function () {
+    $('#meminfo').highcharts({
+        chart: {
+            type: 'spline'
+        },
+        title: {
+            text: 'oltp_read_write.lua'
+        },
+
+        xAxis: {
+            categories:
+			["6","10","15","20","40","60","80","100","150","200","300","400","600","800"]
+        },
+        yAxis: {
+            title: {
+                text: 'tps\/s'
+            },
+            labels: {
+                formatter: function() {
+                    return this.value 
+                }
+            }
+        }, 
+        credits: {   
+            text: 'Juanpi_db',
+            href: 'http://www.dbauto.org'  
+        }, 
+        tooltip: {
+            crosshairs: true,
+            shared: true,
+            valueSuffix: ''
+        },
+        plotOptions: {
+            spline: {
+                marker: {
+                    radius: 2,
+                    lineColor: '#234',
+                    lineWidth: 1
+                }
+            }
+        },
+        series: [{
+            name: 'tps\/s',
+            data: [8668,12405,16269,19844,27452,28933,29327,29190,28640,25390,19479,16893,17118,14972]
+	 		}
+		]          
+    });             
+});     
+
  </script>            
 </head>
+<p>sysyben</p>
 <body>
-  <div id="insert"></div>
+ 	<div id="insert"></div>
+ 	<div id="cpuinfo"></div>
+  	<div id="meminfo"></div>
 </body>
 </html>
 
