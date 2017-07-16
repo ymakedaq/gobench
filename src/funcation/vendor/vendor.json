@@ -1,0 +1,31 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "NaoYWMJoqvHk9x3vUddGfovHUH8=",
+			"path": "github.com/toolkits/file",
+			"revision": "a5b3c5147e07f934d9f9d00b901a20b2529f1a57",
+			"revisionTime": "2016-03-25T03:37:39Z"
+		},
+		{
+			"checksumSHA1": "BNs189LlIF17E21Wyjdt9V/dhkE=",
+			"path": "github.com/toolkits/nux",
+			"revision": "d5bf087ae58de8d83fbb04a0a8c8e9d739cb9620",
+			"revisionTime": "2017-06-15T08:01:54Z"
+		},
+		{
+			"checksumSHA1": "Qiry1sk4xCNWyEomSpHx6FOdnGw=",
+			"path": "github.com/toolkits/slice",
+			"revision": "e44a80af24848e28cf208d84778e62e660303159",
+			"revisionTime": "2014-11-16T08:51:17Z"
+		},
+		{
+			"checksumSHA1": "tX4ECnkw4GfLp3P06OVhhdqpEUg=",
+			"path": "github.com/toolkits/sys",
+			"revision": "1f33b217ffafd62561fa8f5b4977dfe3099f47e3",
+			"revisionTime": "2017-06-15T10:30:26Z"
+		}
+	],
+	"rootPath": "funcation"
+}
