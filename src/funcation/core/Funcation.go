@@ -54,7 +54,7 @@ func DealChain() {
 			for _, v := range a.cpusidle {
 				cpufilefd.Write([]byte(fmt.Sprintf("%s", v)))
 			}
-			cpufilefd.Write([]byte(fmt.Sprintf("/n")))
+			cpufilefd.Write([]byte(fmt.Sprintf("\n")))
 		}
 		defer cpufilefd.Close()
 	}()
