@@ -152,18 +152,19 @@ func SysbenchResCut(rows *[]string) (map[string]interface{}, error) {
 }
 
 func SysbenchCpucut() {
-	//	var t [32][]float64
+
 	cr, err := Readfile(CPUFILE)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(len(*cr))
+	cc := *cr
+	size := len(strings.Split(strings.TrimSpace(cc[len(cc)-1]), " "))
+	t := make([][]float64, size)
 	for _, v := range *cr {
 		if len(v) > 0 {
 
 			for index, value := range strings.Split(strings.TrimSpace(v), " ") {
-				fmt.Println(index, value)
 				single, err := strconv.ParseFloat(value, 32)
 				if err != nil {
 					fmt.Println(err)
@@ -173,6 +174,7 @@ func SysbenchCpucut() {
 			}
 		}
 	}
+	fmt.Println(t)
 }
 
 func Createhmtl(filname string, htmldat string) error {
