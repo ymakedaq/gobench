@@ -4,3 +4,4 @@ src/test/test
 *.a
 *.o
 *.exe
+*.txt

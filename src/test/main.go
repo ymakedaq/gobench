@@ -131,12 +131,12 @@ func SysbenchResCut(rows *[]string) (map[string]interface{}, error) {
 	for _, v := range *rows {
 		if len(v) > 1 {
 			res := strings.Replace(strings.Split(v, "run")[1], "}", "", -1)
-			time, _ := strconv.Atoi(strings.Split(res, " ")[5])
-
-			pthread = append(pthread, strings.Split(res, " ")[4])
-			tps, _ := strconv.Atoi(strings.Split(res, " ")[7])
-			qps, _ := strconv.Atoi(strings.Split(res, " ")[8])
-			igrs, _ := strconv.Atoi(strings.Split(res, " ")[9])
+			res = strings.TrimSpace(res)
+			time, _ := strconv.Atoi(strings.Split(res, " ")[3])
+			pthread = append(pthread, strings.Split(res, " ")[2])
+			tps, _ := strconv.Atoi(strings.Split(res, " ")[9])
+			qps, _ := strconv.Atoi(strings.Split(res, " ")[10])
+			igrs, _ := strconv.Atoi(strings.Split(res, " ")[11])
 			ptps = append(ptps, tps/time)
 			pqps = append(pqps, qps/time)
 			pigrs = append(pigrs, igrs)
@@ -152,23 +152,24 @@ func SysbenchResCut(rows *[]string) (map[string]interface{}, error) {
 }
 
 func SysbenchCpucut() {
-	var t [][]float64
+	//	var t [32][]float64
 	cr, err := Readfile(CPUFILE)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-
+	fmt.Println(len(*cr))
 	for _, v := range *cr {
 		if len(v) > 0 {
-			l := strings.Replace(strings.Replace(v, "[", "", -1), "]", "", -1)
-			for index, value := range strings.Split(l, " ") {
-				v, err := strconv.ParseFloat(value, 32)
+
+			for index, value := range strings.Split(strings.TrimSpace(v), " ") {
+				fmt.Println(index, value)
+				single, err := strconv.ParseFloat(value, 32)
 				if err != nil {
 					fmt.Println(err)
 					return
 				}
-				t[index] = append(t[index], v)
+				t[index] = append(t[index], single)
 			}
 		}
 	}
