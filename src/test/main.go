@@ -29,9 +29,9 @@ type MysqlSysbenchResult struct {
 package main
 
 import (
-	//	"github.com/ivpusic/grpool"
 	"bufio"
 	"bytes"
+	//"encoding/json"
 	"errors"
 	"fmt"
 	"funcation/golog"
@@ -40,6 +40,7 @@ import (
 	"os"
 	"strconv"
 	"strings"
+	"time"
 )
 
 const (
@@ -49,11 +50,21 @@ const (
 )
 
 type Dreawhtml struct {
-	Headtitle string //html 的title
-	Ytitle    string
-	Xtitle    string
-	Xdata     []string //x轴的数据值
-	Ydata     []int    //y轴的数据值
+	Headtitle    string //html 的title
+	Ytitle       string
+	Xtitle       string
+	Xdata        []string //x轴的数据值
+	Ydata        []int    //y轴的数据值
+	CpuHeadtitle string
+	CpuYtitle    string
+	CpuXtitle    string
+	CpuXdata     []string
+	CpuYdata     [][]int64
+	MemHeadtitle string
+	MemYtitle    string
+	MemXtitle    string
+	MemXdata     []string
+	MemYdata     [][]int64
 }
 
 //渲染html  结构体的元素也需要首字母大写
@@ -71,6 +82,23 @@ func main() {
 		fmt.Println(err)
 		return
 	}
+	cpures, err := SysbenchCpucut(CPUFILE)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	memres, err := SysbenchCpucut(MEMFILE)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	dat.MemXdata = TransintTotime(memres[0])
+	dat.MemYdata = memres[1:]
+	dat.MemHeadtitle = "Memory"
+	dat.CpuXdata = TransintTotime(cpures[0])
+	dat.CpuYdata = cpures[1:]
+	dat.CpuHeadtitle = "CPU idle"
+	dat.CpuYtitle = "cpu idle"
 	dat.Headtitle = res["headtitle"].(string)
 	dat.Xtitle = "tps/s"
 	dat.Ytitle = "tps/s"
@@ -91,7 +119,6 @@ func main() {
 	//tmpl.Execute(os.Stdout, list)
 	//fmt.Println(doc.String())
 
-	SysbenchCpucut()
 }
 
 func Readfile(f string) (*[]string, error) {
@@ -151,30 +178,41 @@ func SysbenchResCut(rows *[]string) (map[string]interface{}, error) {
 	return mn, nil
 }
 
-func SysbenchCpucut() {
+func SysbenchCpucut(filname string) ([][]int64, error) {
 
-	cr, err := Readfile(CPUFILE)
+	cr, err := Readfile(filname)
 	if err != nil {
 		fmt.Println(err)
-		return
+		return [][]int64{}, err
 	}
 	cc := *cr
 	size := len(strings.Split(strings.TrimSpace(cc[len(cc)-1]), " "))
-	t := make([][]float64, size)
+	t := make([][]int64, size)
 	for _, v := range *cr {
 		if len(v) > 0 {
 
 			for index, value := range strings.Split(strings.TrimSpace(v), " ") {
-				single, err := strconv.ParseFloat(value, 32)
-				if err != nil {
-					fmt.Println(err)
-					return
+				if index == 0 {
+					single, err := strconv.Atoi(value)
+					t[index] = append(t[index], int64(single))
+					if err != nil {
+						fmt.Println(err)
+						return [][]int64{}, err
+					}
+				} else {
+					single, err := strconv.ParseFloat(value, 32)
+					t[index] = append(t[index], int64(single))
+					if err != nil {
+						fmt.Println(err)
+						return [][]int64{}, err
+					}
 				}
-				t[index] = append(t[index], single)
+
 			}
 		}
 	}
-	fmt.Println(t)
+
+	return t, nil
 }
 
 func Createhmtl(filname string, htmldat string) error {
@@ -186,4 +224,16 @@ func Createhmtl(filname string, htmldat string) error {
 	fd.Write([]byte(htmldat))
 	fd.Close()
 	return nil
+}
+
+func TransintTotime(unixt []int64) []string {
+	var k []string
+	for _, v := range unixt {
+		k = append(k, time.Unix(int64(v), 0).Format("2006-01-02 03:04:05"))
+	}
+	return k
+}
+
+func CreateXdata(idle [][]int) string {
+	return "ok"
 }

@@ -67,7 +67,7 @@ const (
             type: 'spline'
         },
         title: {
-            text: '{{.Headtitle}}'
+            text: '{{.CpuHeadtitle}}'
         },/*
         subtitle: {
             text: 'bench from  ds_group@juanpi.com',
@@ -75,11 +75,11 @@ const (
         },*/
         xAxis: {
             categories:
-			{{.Xdata}}
+			{{.CpuXdata}}
         },
         yAxis: {
             title: {
-                text: '{{.Ytitle}}'
+                text: '{{.CpuYtitle}}'
             },
             labels: {
                 formatter: function() {
@@ -105,10 +105,12 @@ const (
                 }
             }
         },
-        series: [{
-            name: '{{.Xtitle}}',
-            data: {{.Ydata}}
-	 		}
+        series: [
+			 {{  range $index,$value := .CpuYdata}}
+			 	 { name: "cpu{{$index}}" ,
+				   data: {{$value}}
+				  },
+			{{end}}
 		]          
     });             
 });     
@@ -119,7 +121,7 @@ const (
             type: 'spline'
         },
         title: {
-            text: '{{.Headtitle}}'
+            text: '{{.MemHeadtitle}}'
         },/*
         subtitle: {
             text: 'bench from  ds_group@juanpi.com',
@@ -127,11 +129,11 @@ const (
         },*/
         xAxis: {
             categories:
-			{{.Xdata}}
+			{{.MemXdata}}
         },
         yAxis: {
             title: {
-                text: '{{.Ytitle}}'
+                text: '{{.MemYtitle}}'
             },
             labels: {
                 formatter: function() {
@@ -157,10 +159,14 @@ const (
                 }
             }
         },
-        series: [{
-            name: '{{.Xtitle}}',
-            data: {{.Ydata}}
-	 		}
+        series: [
+           		 {{  range $index,$value := .MemYdata}}
+					
+			 	 { name: "mem{{$index}}" ,
+				   data: {{$value}}
+				  },
+			{{end}}
+	 		
 		]          
     });             
 });     
