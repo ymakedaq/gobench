@@ -18,7 +18,7 @@ var cpuchain chan *CpuInfo = make(chan *CpuInfo)
 var memchain chan *MemInfoMap = make(chan *MemInfoMap)
 
 func Collect() {
-	t := time.NewTicker(1 * time.Second).C
+	t := time.NewTicker(60 * time.Second).C
 
 	for {
 		<-t
