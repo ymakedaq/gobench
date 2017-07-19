@@ -14,11 +14,6 @@ func InitCpu() {
 	}
 }
 
-const (
-	CPUFILE = `./cpufile.txt`
-	MEMFILE = `./memfile.txt`
-)
-
 var cpuchain chan *CpuInfo = make(chan *CpuInfo)
 var memchain chan *MemInfoMap = make(chan *MemInfoMap)
 

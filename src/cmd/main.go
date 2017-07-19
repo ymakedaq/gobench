@@ -11,16 +11,7 @@ import (
 	"os"
 	"path"
 	"strings"
-	//	"text/template"
-	//"sync"
 	"time"
-)
-
-const (
-	logfilename = `grun.log`
-	loglevel    = `info`
-	MaxLogsize  = 1024 * 1024 * 1024 // 单位 （byte）
-	resultfile  = `./res.txt`
 )
 
 func main() {
@@ -32,10 +23,10 @@ func main() {
 	`
 	fmt.Println(LOGO)
 	logFilePath := "/tmp/"
-	logFile := path.Join(logFilePath, logfilename)
+	logFile := path.Join(logFilePath, core.LogFilename)
 	logfile_time, _ := golog.NewTimeRotatingFileHandler(logFile, 3, 1)
 	golog.GlobalSysLogger = golog.New(logfile_time, golog.Lfile|golog.Ltime|golog.Llevel)
-	setLogLevel(loglevel)
+	setLogLevel(core.Loglevel)
 	defer golog.GlobalSysLogger.Close()
 	cmd := flag.String("c", "", "Please Input `sysbench  Commad`~")
 	flag.Parse()
@@ -50,7 +41,7 @@ func main() {
 	go core.Collect()
 	core.DealChain()
 
-	resfd, _ := golog.NewFileHandler(resultfile, os.O_CREATE|os.O_RDWR|os.O_APPEND)
+	resfd, _ := golog.NewFileHandler(core.RESFILE, os.O_CREATE|os.O_RDWR|os.O_APPEND)
 	for index, v := range cdl {
 		fmt.Println(index, "--start--", v)
 		res, err := datahandle.NewMysqlsysbenchRes(v)
@@ -62,6 +53,9 @@ func main() {
 		fmt.Println(res)
 	}
 	resfd.Close()
+
+	var mk datahandle.Dreawhtml
+	mk.Newchart()
 
 }
 
@@ -122,8 +116,4 @@ func setLogLevel(level string) {
 	default:
 		golog.GlobalSysLogger.SetLevel(golog.LevelError)
 	}
-}
-
-func CreateHhml() {
-
 }

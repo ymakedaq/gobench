@@ -46,7 +46,7 @@ import (
 const (
 	CPUFILE    = `./cpufile.txt`
 	MEMFILE    = `./memfile.txt`
-	resultfile = `./res.txt`
+	RESULTFILE = `./res.txt`
 )
 
 type Dreawhtml struct {
