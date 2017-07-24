@@ -16,7 +16,7 @@ import (
 
 func main() {
 
-	var mk datahandle.Dreawhtml
+	//	var TheadWait sync.WaitGroup
 
 	LOGO := `
 		压测线程数  5, 10, 15, 20, 40, 60, 80, 100, 150, 200, 300, 400, 600, 800, 1000 递进压测
@@ -54,6 +54,7 @@ func main() {
 	}
 	resfd.Close()
 
+	var mk datahandle.Dreawhtml
 	mk.Newchart()
 
 }
