@@ -88,6 +88,7 @@ func CheckInstallsysbench() {
 			fmt.Println(string(res))
 			if err != nil {
 				fmt.Println("Install Sysbench Fail!!")
+				fmt.Println(time.Now().Format("2006-01-02 15:04:05"), err)
 				return
 
 			} else {
