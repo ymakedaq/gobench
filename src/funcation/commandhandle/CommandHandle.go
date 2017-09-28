@@ -15,7 +15,6 @@ func CommandExecResultBytes(command string) ([]byte, error) {
 	defer stderr.Close()
 	defer stdout.Close()
 	if err := cmd.Start(); err != nil {
-		//logger.Fatal("Exce" + command + "Fail!")
 		golog.Error("command", "command", fmt.Sprintf("Execue %s Fail!", err), 0)
 		return nil, err
 	}
@@ -24,7 +23,6 @@ func CommandExecResultBytes(command string) ([]byte, error) {
 	opError, err := ioutil.ReadAll(stderr)
 	if err != nil {
 		golog.Error("command", "command", fmt.Sprintf("Execue %s Fail!", err), 0)
-		//logger.Printf("Read stdout Fail", err)
 		return nil, err
 	}
 	if len(opError) > 0 {
