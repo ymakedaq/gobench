@@ -84,7 +84,7 @@ func CheckInstallsysbench() {
 		fmt.Scanln(&wins)
 		if wins == "Y" || wins == "y" {
 			fmt.Println("Install ...")
-			res, err := commandhandle.CommandExecResultBytes("yum install  sudo -y && curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash " +
+			res, err := commandhandle.CommandExecResultBytes("yum -y install make automake libtool pkgconfig libaio-devel vim-common sudo -y && curl -s https://packagecloud.io/install/repositories/akopytov/sysbench/script.rpm.sh | sudo bash " +
 				"&& yum-config-manager --save --setopt=akopytov_sysbench.skip_if_unavailable=true  && yum install  sysbench -y")
 			fmt.Println(string(res))
 			if err != nil {
