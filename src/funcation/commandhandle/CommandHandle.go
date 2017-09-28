@@ -9,7 +9,7 @@ import (
 )
 
 func CommandExecResultBytes(command string) ([]byte, error) {
-	cmd := exec.Command("/bin/sh", "-c", command)
+	cmd := exec.Command("sh", "-c", command)
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
 	defer stderr.Close()
