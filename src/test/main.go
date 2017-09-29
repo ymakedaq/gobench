@@ -26,8 +26,7 @@ type MysqlSysbenchResult struct {
 }
 */
 
-package main
-
+/*
 import (
 	"bufio"
 	"bytes"
@@ -236,4 +235,22 @@ func TransintTotime(unixt []int64) []string {
 
 func CreateXdata(idle [][]int) string {
 	return "ok"
+}
+*/
+package main
+
+import (
+	"fmt"
+	//"fmt"
+	"lib/cfg"
+	"regexp"
+)
+
+var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
+
+func main() {
+	test := cfg.New_Gbh_cfg("app.conf")
+	test.Init_self()
+	fmt.Println(test)
+
 }

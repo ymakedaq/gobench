@@ -8,6 +8,7 @@ import (
 	"funcation/core"
 	"funcation/datahandle"
 	"funcation/golog"
+	"lib/cfg"
 	"os"
 	"path"
 	"strings"
@@ -17,7 +18,7 @@ import (
 func main() {
 
 	//	var TheadWait sync.WaitGroup
-
+	var cdl []string
 	LOGO := `
 		压测线程数  5, 10, 15, 20, 40, 60, 80, 100, 150, 200, 300, 400, 600, 800, 1000 递进压测
 	`
@@ -28,13 +29,18 @@ func main() {
 	golog.GlobalSysLogger = golog.New(logfile_time, golog.Lfile|golog.Ltime|golog.Llevel)
 	setLogLevel(core.Loglevel)
 	defer golog.GlobalSysLogger.Close()
-	cmd := flag.String("c", "", "Please Input `sysbench  Commad`~")
+	cmd := flag.String("c", "", "--sysbench command")
+	conf_file := flag.String("f", "", "--Conf file")
 	flag.Parse()
-	if len(*cmd) <= 0 {
-		fmt.Printf("Please Input Command!!")
+	if cmd == nil && conf_file == nil {
+		fmt.Println("No found  Some value!")
 		return
 	}
-	cdl := Newcommand(*cmd)
+	if len(*cmd) <= 0 {
+		fmt.Println("No Command from  command line~,will be get config from  configfile~")
+	} eli {
+		cdl := Newcommand(*cmd)
+	}
 
 	go core.InitCpu()
 	time.Sleep(1 * time.Second)
@@ -43,7 +49,8 @@ func main() {
 
 	resfd, _ := golog.NewFileHandler(core.RESFILE, os.O_CREATE|os.O_RDWR|os.O_APPEND)
 	for index, v := range cdl {
-		fmt.Println(index, "--start--", v)
+		fmt.Println(index, "--start--")
+		fmt.Println(v)
 		res, err := datahandle.NewMysqlsysbenchRes(v)
 		if err != nil {
 			fmt.Println(err)
@@ -73,6 +80,10 @@ func Newcommand(cmd string) []string {
 	}
 
 	return cmdlist
+}
+
+func NewcommandFromcfg() {
+
 }
 
 func CheckInstallsysbench() {
