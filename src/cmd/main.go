@@ -34,7 +34,8 @@ func main() {
 	cmd := flag.String("c", "", "--sysbench command")
 	conf_file := flag.String("f", "", "--Conf file")
 	flag.Parse()
-	if len(flag.Args()) == 0 {
+	fmt.Println(flag.NArg())
+	if flag.NArg() <= 0 {
 		fmt.Println("---------------NO Args-----------")
 		return
 	}
