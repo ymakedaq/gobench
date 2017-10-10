@@ -34,7 +34,11 @@ func main() {
 	cmd := flag.String("c", "", "--sysbench command")
 	conf_file := flag.String("f", "", "--Conf file")
 	flag.Parse()
-	if cmd != nil {
+	if len(flag.Args()) == 0 {
+		fmt.Println("---------------NO Args-----------")
+		return
+	}
+	if len(*cmd) >= 0 {
 		cdl = Newcommand(*cmd)
 		gblist["current"] = cdl
 	} else {
