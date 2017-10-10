@@ -67,7 +67,7 @@ func (this *Dreawhtml) Newchart(rfile_name string) {
 
 	var html bytes.Buffer
 	err = tmpl.Execute(&html, this)
-	fmt.Println(html.String())
+	//fmt.Println(html.String())
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -118,7 +118,7 @@ func SysbenchResCut(filename string) (map[string]interface{}, error) {
 	mn["headtitle"] = c[len(c)-1]
 	for _, v := range *rows {
 		if len(v) > 1 {
-			res := strings.Replace(strings.Split(v, "run")[1], "}", "", -1)
+			res := strings.Replace(strings.Split(v, `run"`)[1], "}", "", -1)
 			res = strings.TrimSpace(res)
 			time, _ := strconv.Atoi(strings.Split(res, " ")[3])
 			pthread = append(pthread, strings.Split(res, " ")[2])
