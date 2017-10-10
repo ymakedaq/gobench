@@ -245,15 +245,13 @@ import (
 	"lib/cfg"
 	"regexp"
 	"strings"
-	"time"
+	//	"time"
 )
 
 var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
 
 func main() {
-
-	a := time.Unix(1507617904, 0).Format("2006,01,02,03,04,05")
-	b := "Date.UTC(" + a + ")"
+	b := [5]int{1, 2, 2, 3, 5}
 	fmt.Println(b)
 
 }

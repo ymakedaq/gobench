@@ -109,8 +109,11 @@ const (
                 },
                 pointInterval: {{.Interval}}, // one 秒 1000 = 1s
                 pointStart: Date.UTC(
-					{{range .StartTime}}
-    						{{.}},
+					{{range  $index, $elem := .StartTime}}
+    						{{$elem}}
+							{{ if $index lt (.StartTime|len) }}
+								,
+							{{end}}
 					{{end}}
 				)
             }
@@ -129,7 +132,8 @@ const (
  $(function () {
     $('#meminfo').highcharts({
         chart: {
-            type: 'spline'
+            type: 'spline',
+			zoomType: 'x'
         },
         title: {
             text: '{{.MemHeadtitle}}'
@@ -139,8 +143,10 @@ const (
             x: -20
         },*/
         xAxis: {
-            categories:
-			{{.MemXdata}}
+             type: 'datetime',
+            labels: {
+                overflow: 'justify'
+            }
         },
         yAxis: {
             title: {
@@ -150,7 +156,11 @@ const (
                 formatter: function() {
                     return this.value 
                 }
-            }
+            },
+			min: 0,
+            minorGridLineWidth: 0,
+            gridLineWidth: 0,
+            alternateGridColor: null
         }, 
         credits: {   
             text: 'Juanpi_db',
@@ -161,15 +171,31 @@ const (
             shared: true,
             valueSuffix: ''
         },
-        plotOptions: {
-            spline: {
-                marker: {
-                    radius: 2,
-                    lineColor: '#234',
-                    lineWidth: 1
-                }
-            }
+        tooltip: {
+            valueSuffix: 'cpu idle'
         },
+          plotOptions: {
+            spline: {
+                lineWidth: 2,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
+                marker: {
+                    enabled: false
+                },
+                pointInterval: {{.Interval}}, // one 秒 1000 = 1s
+                pointStart: Date.UTC(
+					{{range  $index, $elem := .StartTime}}
+    						{{$elem}}
+							{{ if $index lt (.StartTime|len) }}
+								,
+							{{end}}
+					{{end}}
+				)
+            }
+        },		
         series: [
            		 {{  range $index,$value := .MemYdata}}
 					
