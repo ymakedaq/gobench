@@ -36,7 +36,7 @@ type Dreawhtml struct {
 func (this *Dreawhtml) Newchart(rfile_name string) {
 	tmpl := template.New("")
 	tmpl.Parse(tpl)
-	res, err := SysbenchResCut(core.RESFILE)
+	res, err := SysbenchResCut(rfile_name)
 	if err != nil {
 		fmt.Println(err)
 		return
