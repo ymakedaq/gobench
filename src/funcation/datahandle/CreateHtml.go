@@ -18,7 +18,7 @@ import (
 type Dreawhtml struct {
 	Headtitle    string //html 的title
 	Interval     int
-	StartTime    string
+	StartTime    []int
 	Ytitle       string
 	Xtitle       string
 	Xdata        []string //x轴的数据值
@@ -55,8 +55,12 @@ func (this *Dreawhtml) Newchart(rfile_name string) {
 	}
 
 	ttime := time.Unix(cpures[0][0], 0).Format("2006,01,02,03,04,05")
+	stime_arry, err := ConvertTime(ttime)
+	if err != nil {
+		return
+	}
 	this.Interval = core.AtouchTime * 1000
-	this.StartTime = fmt.Sprint(`Date.UTC(` + ttime + `)`)
+	this.StartTime = stime_arry
 	this.MemXdata = TransintTotime(memres[0])
 	this.MemYdata = memres[1:]
 	this.MemHeadtitle = "Memory"
@@ -80,6 +84,19 @@ func (this *Dreawhtml) Newchart(rfile_name string) {
 	if err != nil {
 		fmt.Println(err)
 	}
+}
+
+func ConvertTime(s string) ([]int, error) {
+	var k []int
+	for _, v := range strings.Split(s, ",") {
+		num, err := strconv.Atoi(v)
+		if err != nil {
+			golog.Error("datahandle", "Convertime", fmt.Sprint(err), 0)
+			return []int{}, err
+		}
+		k = append(k, num)
+	}
+	return k, nil
 }
 
 func Createhmtl(filname string, htmldat string) error {

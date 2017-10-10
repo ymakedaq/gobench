@@ -108,7 +108,11 @@ const (
                     enabled: false
                 },
                 pointInterval: {{.Interval}}, // one 秒 1000 = 1s
-                pointStart: {{.StartTime}}
+                pointStart: Date.UTC(
+					{{range .StartTime}}
+    						{{.}},
+					{{end}}
+				)
             }
         },		
 	
