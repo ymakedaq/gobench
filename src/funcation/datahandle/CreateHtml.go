@@ -18,7 +18,7 @@ import (
 type Dreawhtml struct {
 	Headtitle    string //html 的title
 	Interval     int
-	StartTime    string
+	StartTime    []string
 	Ytitle       string
 	Xtitle       string
 	Xdata        []string //x轴的数据值
@@ -55,7 +55,7 @@ func (this *Dreawhtml) Newchart(rfile_name string) {
 	}
 
 	this.Interval = core.AtouchTime * 1000
-	this.StartTime = time.Unix(cpures[0][0], 0).Format("2006,01,02,03,04,05")
+	this.StartTime = strings.Split(time.Unix(cpures[0][0], 0).Format("2006,01,02,03,04,05"), ",")
 	this.MemXdata = TransintTotime(memres[0])
 	this.MemYdata = memres[1:]
 	this.MemHeadtitle = "Memory"
