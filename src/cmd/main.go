@@ -34,7 +34,7 @@ func main() {
 	cmd := flag.String("c", "", "--sysbench command")
 	conf_file := flag.String("f", "", "--Conf file")
 	flag.Parse()
-
+	fmt.Println(len(*cmd))
 	if len(*cmd) >= 0 {
 		cdl = Newcommand(*cmd)
 		gblist["current"] = cdl
@@ -100,6 +100,7 @@ func NewcommandFromcfg(c *cfg.Gbh_cfg) map[string][]string {
 func benchwork(res_flname string, cdl []string) {
 	if len(cdl) <= 0 {
 		fmt.Println("No Command list~")
+		return
 	}
 	resfd, _ := golog.NewFileHandler(res_flname+".txt", os.O_CREATE|os.O_RDWR|os.O_APPEND)
 	for index, v := range cdl {
