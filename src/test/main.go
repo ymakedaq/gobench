@@ -252,7 +252,9 @@ var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
 
 func main() {
 
-	fmt.Println(time.Unix(1507617904, 0).Format("2006,01,02,03,04,05"))
+	a := time.Unix(1507617904, 0).Format("2006,01,02,03,04,05")
+	b := "Date.UTC(" + a + ")"
+
 }
 
 func commandfromfile(c *cfg.Gbh_cfg) map[string][]string {
