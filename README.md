@@ -1,3 +1,3 @@
 # gobench
- Sysbench for  mysql creaete bench html
+ Sysbench for  mysql create bench html
  
