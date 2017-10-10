@@ -17,8 +17,10 @@ import (
 
 func main() {
 
-	//	var TheadWait sync.WaitGroup
 	var cdl []string
+	var gblist map[string][]string
+	gblist = make(map[string][]string)
+
 	LOGO := `
 		压测线程数  5, 10, 15, 20, 40, 60, 80, 100, 150, 200, 300, 400, 600, 800, 1000 递进压测
 	`
@@ -32,37 +34,22 @@ func main() {
 	cmd := flag.String("c", "", "--sysbench command")
 	conf_file := flag.String("f", "", "--Conf file")
 	flag.Parse()
-	if cmd == nil && conf_file == nil {
-		fmt.Println("No found  Some value!")
-		return
+	if cmd != nil {
+		cdl = Newcommand(*cmd)
+		gblist["current"] = cdl
+	} else {
+		gcmd := cfg.New_Gbh_cfg(*conf_file)
+		gcmd.Init_self()
+		gblist = NewcommandFromcfg(gcmd)
 	}
-	if len(*cmd) <= 0 {
-		fmt.Println("No Command from  command line~,will be get config from  configfile~")
-	} eli {
-		cdl := Newcommand(*cmd)
-	}
-
 	go core.InitCpu()
 	time.Sleep(1 * time.Second)
 	go core.Collect()
 	core.DealChain()
 
-	resfd, _ := golog.NewFileHandler(core.RESFILE, os.O_CREATE|os.O_RDWR|os.O_APPEND)
-	for index, v := range cdl {
-		fmt.Println(index, "--start--")
-		fmt.Println(v)
-		res, err := datahandle.NewMysqlsysbenchRes(v)
-		if err != nil {
-			fmt.Println(err)
-			return
-		}
-		resfd.Write([]byte(fmt.Sprintln(*res)))
-		fmt.Println(res)
+	for map_index, _ := range gblist {
+		benchwork(map_index, gblist[map_index])
 	}
-	resfd.Close()
-
-	var mk datahandle.Dreawhtml
-	mk.Newchart()
 
 }
 
@@ -82,8 +69,48 @@ func Newcommand(cmd string) []string {
 	return cmdlist
 }
 
-func NewcommandFromcfg() {
+func NewcommandFromcfg(c *cfg.Gbh_cfg) map[string][]string {
+	var rt map[string][]string
+	rt = make(map[string][]string)
+	for _, v := range c.Servers {
+		for index, cmd := range v.Cmd_list {
+			var t []string
+			rt_name := v.Server_name + "_cmd" + fmt.Sprintf("%d", index+1)
+			list_cmd := strings.Split(cmd, " ")
+			list_cmd[1] = "--mysql-host=" + v.Mysql_host
+			list_cmd[2] = "--mysql-user=" + v.Mysql_user
+			list_cmd[3] = "--mysql-password=" + v.Mysql_password
+			list_cmd[4] = "--mysql-db=" + v.Mysql_db
+			list_cmd[5] = "--mysql-port=" + fmt.Sprintf("%d", v.Mysql_port)
+			list_cmd[6] = "--time=" + fmt.Sprintf("%d", v.Bench_time)
+			list_cmd[7] = "--db-driver=" + v.DB_Driver
+			for _, thread := range c.Thread_list {
+				list_cmd[8] = " --threads=" + fmt.Sprintf("%d", thread)
+				t = append(t, strings.Join(list_cmd, " "))
+			}
+			rt[rt_name] = t
+		}
+	}
+	return rt
+}
 
+func benchwork(res_flname string, cdl []string) {
+	resfd, _ := golog.NewFileHandler(res_flname+".txt", os.O_CREATE|os.O_RDWR|os.O_APPEND)
+	for index, v := range cdl {
+		fmt.Println(index, "--start--")
+		fmt.Println(v)
+		res, err := datahandle.NewMysqlsysbenchRes(v)
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		resfd.Write([]byte(fmt.Sprintln(*res)))
+		fmt.Println(res)
+	}
+	resfd.Close()
+
+	var mk datahandle.Dreawhtml
+	mk.Newchart(res_flname + ".html")
 }
 
 func CheckInstallsysbench() {

@@ -173,13 +173,11 @@ const (
 
  </script>            
 </head>
-<p>sysyben</p>
 <body>
  	<div id="insert"></div>
  	<div id="cpuinfo"></div>
   	<div id="meminfo"></div>
 </body>
 </html>
-
-	`
+`
 )

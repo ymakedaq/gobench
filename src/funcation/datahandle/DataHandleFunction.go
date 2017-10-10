@@ -12,6 +12,7 @@ import (
 )
 
 type MysqlSysbenchResult struct {
+	//rojectName           string
 	Command               string
 	Starttime             int64  //压测开始时间
 	Endtime               int64  //压测结束时间
@@ -110,32 +111,21 @@ func (this *MysqlSysbenchResult) DealBytes(barry []byte) {
 			case "reconnects":
 				this.Treconnect, _ = strconv.Atoi(strings.Split(Rowscuts[1], "(")[0])
 			case "min":
-				//this.Exmin, _ = strconv.ParseFloat(Rowscuts[1], 32)
 				this.Exmin = FloatString(Rowscuts[1])
 			case "avg":
-				//this.Exavg, _ = strconv.ParseFloat(Rowscuts[1], 32)
 				this.Exavg = FloatString(Rowscuts[1])
 			case "max":
-				//this.Exmax, _ = strconv.ParseFloat(Rowscuts[1], 32)
 				this.Exmax = FloatString(Rowscuts[1])
 			case "95thpercentile":
-				//this.Ex_95_percent, _ = strconv.ParseFloat(Rowscuts[1], 32)
 				this.Ex_95_percent = FloatString(Rowscuts[1])
 			case "sum":
-				//this.Exsum, _ = strconv.ParseFloat(Rowscuts[1], 32)
 				this.Exsum = FloatString(Rowscuts[1])
 			case "events(avg/stddev)":
-				//this.Event_avg, _ = strconv.ParseFloat(strings.Split(Rowscuts[1], "/")[0], 32)
-				//this.Event_stddev, _ = strconv.ParseFloat(strings.Split(Rowscuts[1], "/")[0], 32)
 				this.Event_avg = FloatString(strings.Split(Rowscuts[1], "/")[0])
 				this.Event_stddev = FloatString(strings.Split(Rowscuts[1], "/")[1])
 			case "executiontime(avg/stddev)":
-				//this.Execution_time_avg, _ = strconv.ParseFloat(strings.Split(Rowscuts[1], "/")[0], 32)
-				//this.Execution_time_stddev, _ = strconv.ParseFloat(strings.Split(Rowscuts[1], "/")[0], 32)
 				this.Execution_time_avg = FloatString(strings.Split(Rowscuts[1], "/")[0])
 				this.Execution_time_stddev = FloatString(strings.Split(Rowscuts[1], "/")[1])
-			default:
-
 			}
 		}
 	}

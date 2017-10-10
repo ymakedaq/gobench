@@ -244,6 +244,7 @@ import (
 	//"fmt"
 	"lib/cfg"
 	"regexp"
+	"strings"
 )
 
 var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
@@ -251,6 +252,37 @@ var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
 func main() {
 	test := cfg.New_Gbh_cfg("app.conf")
 	test.Init_self()
-	fmt.Println(test)
+	//fmt.Println(test)
+	cmd_map := commandfromfile(test)
+	for index, _ := range commandfromfile(test) {
+		fmt.Println(index)
+		fmt.Println(cmd_map[index])
+		fmt.Println("---------------")
+	}
 
+}
+
+func commandfromfile(c *cfg.Gbh_cfg) map[string][]string {
+	var rt map[string][]string
+	rt = make(map[string][]string)
+	for _, v := range c.Servers {
+		for index, cmd := range v.Cmd_list {
+			var t []string
+			rt_name := v.Server_name + "_cmd" + fmt.Sprintf("%d", index+1)
+			list_cmd := strings.Split(cmd, " ")
+			list_cmd[1] = "--mysql-host=" + v.Mysql_host
+			list_cmd[2] = "--mysql-user=" + v.Mysql_user
+			list_cmd[3] = "--mysql-password=" + v.Mysql_password
+			list_cmd[4] = "--mysql-db=" + v.Mysql_db
+			list_cmd[5] = "--mysql-port=" + fmt.Sprintf("%d", v.Mysql_port)
+			list_cmd[6] = "--time=" + fmt.Sprintf("%d", v.Bench_time)
+			list_cmd[7] = "--db-driver=" + v.DB_Driver
+			for _, thread := range c.Thread_list {
+				list_cmd[8] = " --threads=" + fmt.Sprintf("%d", thread)
+				t = append(t, strings.Join(list_cmd, " "))
+			}
+			rt[rt_name] = t
+		}
+	}
+	return rt
 }

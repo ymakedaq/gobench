@@ -33,7 +33,7 @@ type Dreawhtml struct {
 	MemYdata     [][]int64
 }
 
-func (this *Dreawhtml) Newchart() {
+func (this *Dreawhtml) Newchart(rfile_name string) {
 	tmpl := template.New("")
 	tmpl.Parse(tpl)
 	res, err := SysbenchResCut(core.RESFILE)
@@ -71,7 +71,7 @@ func (this *Dreawhtml) Newchart() {
 	if err != nil {
 		fmt.Println(err)
 	}
-	err = Createhmtl(core.RESHTML, html.String())
+	err = Createhmtl(rfile_name, html.String())
 	if err != nil {
 		fmt.Println(err)
 	}
