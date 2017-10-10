@@ -117,7 +117,7 @@ func benchwork(res_flname string, cdl []string) {
 	resfd.Close()
 
 	var mk datahandle.Dreawhtml
-	mk.Newchart(res_flname + ".html")
+	mk.Newchart(res_flname)
 }
 
 func CheckInstallsysbench() {
