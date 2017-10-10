@@ -56,7 +56,7 @@ func (this *Dreawhtml) Newchart(rfile_name string) {
 
 	ttime := time.Unix(cpures[0][0], 0).Format("2006,01,02,03,04,05")
 	this.Interval = core.AtouchTime * 1000
-	this.StartTime = "Date.UTC(" + ttime + ")"
+	this.StartTime = fmt.Sprint(`Date.UTC(` + ttime + `)`)
 	this.MemXdata = TransintTotime(memres[0])
 	this.MemYdata = memres[1:]
 	this.MemHeadtitle = "Memory"
