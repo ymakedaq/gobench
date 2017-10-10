@@ -34,11 +34,7 @@ func main() {
 	cmd := flag.String("c", "", "--sysbench command")
 	conf_file := flag.String("f", "", "--Conf file")
 	flag.Parse()
-	fmt.Println(flag.NArg())
-	if flag.NArg() <= 0 {
-		fmt.Println("---------------NO Args-----------")
-		return
-	}
+
 	if len(*cmd) >= 0 {
 		cdl = Newcommand(*cmd)
 		gblist["current"] = cdl
@@ -63,7 +59,9 @@ func init() {
 }
 
 func Newcommand(cmd string) []string {
-
+	if len(cmd) <= 0 {
+		return []string{}
+	}
 	step := []int{6, 10, 15, 20, 40, 60, 80, 100, 150, 200, 300, 400, 600, 800, 1000}
 	fmt.Println("Fllow threads", step)
 	var cmdlist []string
@@ -100,6 +98,9 @@ func NewcommandFromcfg(c *cfg.Gbh_cfg) map[string][]string {
 }
 
 func benchwork(res_flname string, cdl []string) {
+	if len(cdl) <= 0 {
+		fmt.Println("No Command list~")
+	}
 	resfd, _ := golog.NewFileHandler(res_flname+".txt", os.O_CREATE|os.O_RDWR|os.O_APPEND)
 	for index, v := range cdl {
 		fmt.Println(index, "--start--")
