@@ -50,6 +50,8 @@ func main() {
 
 	for map_index, _ := range gblist {
 		benchwork(map_index, gblist[map_index])
+		commandhandle.CommandExecResultBytes("> " + core.CPUFILE)
+		commandhandle.CommandExecResultBytes("> " + core.MEMFILE)
 	}
 
 }

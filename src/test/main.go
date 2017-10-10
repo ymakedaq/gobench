@@ -245,21 +245,14 @@ import (
 	"lib/cfg"
 	"regexp"
 	"strings"
+	"time"
 )
 
 var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
 
 func main() {
-	test := cfg.New_Gbh_cfg("app.conf")
-	test.Init_self()
-	//fmt.Println(test)
-	cmd_map := commandfromfile(test)
-	for index, _ := range commandfromfile(test) {
-		fmt.Println(index)
-		fmt.Println(cmd_map[index])
-		fmt.Println("---------------")
-	}
 
+	fmt.Println(time.Unix(1507617904, 0).Format("2006,01,02,03,04,05"))
 }
 
 func commandfromfile(c *cfg.Gbh_cfg) map[string][]string {

@@ -64,47 +64,54 @@ const (
  $(function () {
     $('#cpuinfo').highcharts({
         chart: {
-            type: 'spline'
+            type: 'spline',
+			zoomType: 'x'
         },
         title: {
             text: '{{.CpuHeadtitle}}'
-        },/*
+        },
         subtitle: {
             text: 'bench from  ds_group@juanpi.com',
             x: -20
-        },*/
+        },
         xAxis: {
-            categories:
-			{{.CpuXdata}}
+             type: 'datetime',
+            labels: {
+                overflow: 'justify'
+            }
         },
         yAxis: {
             title: {
                 text: '{{.CpuYtitle}}'
             },
-            labels: {
-                formatter: function() {
-                    return this.value 
-                }
-            }
+			min: 0,
+            minorGridLineWidth: 0,
+            gridLineWidth: 0,
+            alternateGridColor: null
         }, 
         credits: {   
             text: 'Juanpi_db',
             href: 'http://www.dbauto.org'  
         }, 
-        tooltip: {
-            crosshairs: true,
-            shared: true,
-            valueSuffix: ''
+       tooltip: {
+            valueSuffix: 'cpu idle'
         },
-        plotOptions: {
+          plotOptions: {
             spline: {
+                lineWidth: 2,
+                states: {
+                    hover: {
+                        lineWidth: 1
+                    }
+                },
                 marker: {
-                    radius: 2,
-                    lineColor: '#234',
-                    lineWidth: 1
-                }
+                    enabled: false
+                },
+                pointInterval: {{.Interval}}, // one 秒 1000 = 1s
+                pointStart: Date.UTC({{.StartTime}})
             }
-        },
+        },		
+	
         series: [
 			 {{  range $index,$value := .CpuYdata}}
 			 	 { name: "cpu{{$index}}" ,
