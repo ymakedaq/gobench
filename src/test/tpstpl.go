@@ -18,7 +18,7 @@ const (
             text: '{{.Headtitle}}'
         },/*
         subtitle: {
-            text: 'bench from  ds_group@juanpi.com',
+            text: 'bench from make',
             x: -20
         },*/
         xAxis: {
@@ -70,7 +70,7 @@ const (
             text: '{{.CpuHeadtitle}}'
         },/*
         subtitle: {
-            text: 'bench from  ds_group@juanpi.com',
+            text: 'bench from make',
             x: -20
         },*/
         xAxis: {
@@ -124,7 +124,7 @@ const (
             text: '{{.MemHeadtitle}}'
         },/*
         subtitle: {
-            text: 'bench from  ds_group@juanpi.com',
+            text: 'bench from  make',
             x: -20
         },*/
         xAxis: {
