@@ -189,7 +189,7 @@ const (
                 pointStart: Date.UTC(
 					{{range  $index, $elem := .StartTime}}
     						{{$elem}}
-							{{ if $index lt (.StartTime|len) }}
+							{{ if lt $index (.StartTime|len) }}
 								,
 							{{end}}
 					{{end}}
