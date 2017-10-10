@@ -155,7 +155,7 @@ func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 }
 
 func (this *MysqlSysbenchResult) CommandExec() error {
-	cmd := exec.Command("/bin/sh", "-c", this.Command)
+	cmd := exec.Command("sh", "-c", this.Command)
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
 	defer stderr.Close()
