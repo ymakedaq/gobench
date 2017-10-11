@@ -109,12 +109,11 @@ const (
                 },
                 pointInterval: {{.Interval}}, // one 秒 1000 = 1s
                 pointStart: Date.UTC(
-					{{range  $index, $elem := .StartTime}}
-    						{{$elem}}
-							{{ if $index lt (.StartTime|len) }}
-								,
-							{{end}}
-					{{end}}
+					        {{range $k,$v:= .StartTime}}
+                                                {{$v}}
+                            {{ if lt  $k 5 }}
+                                ,
+                            {{end}}
 				)
             }
         },		
@@ -187,12 +186,11 @@ const (
                 },
                 pointInterval: {{.Interval}}, // one 秒 1000 = 1s
                 pointStart: Date.UTC(
-					{{range  $index, $elem := .StartTime}}
-    						{{$elem}}
-							{{ if lt $index (.StartTime|len) }}
-								,
-							{{end}}
-					{{end}}
+					        {{range $k,$v:= .StartTime}}
+                                                {{$v}}
+                            {{ if lt  $k 5 }}
+                                ,
+                            {{end}}
 				)
             }
         },		
