@@ -147,6 +147,7 @@ func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 	}
 	err = h.CommandExec()
 	if err != nil {
+		fmt.Println("ERROR:", err)
 		golog.Error("datahandle", "datahandle", fmt.Sprintf("%s", err), 0)
 		return nil, err
 	}
