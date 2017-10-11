@@ -147,7 +147,6 @@ func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 	}
 	err = h.CommandExec()
 	if err != nil {
-		fmt.Println("ERROR:", err)
 		golog.Error("datahandle", "datahandle", fmt.Sprintf("%s", err), 0)
 		return nil, err
 	}
@@ -174,6 +173,8 @@ func (this *MysqlSysbenchResult) CommandExec() error {
 	}
 	if len(opError) > 0 {
 		return errors.New(string(opError))
+		fmt.Println("shell StdOut:", string(opError))
+		fmt.Println("shell StdError:", string(opError))
 		golog.Error("datahandler", "datahandler", string(opError), 0)
 	}
 	this.DealBytes(opBytes)
