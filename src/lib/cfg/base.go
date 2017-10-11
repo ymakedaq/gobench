@@ -46,6 +46,7 @@ func (this *Gbh_cfg) Init_self() {
 	}
 	tl, err := cfg.RawStringDefault("thread_list")
 	if err != nil {
+		fmt.Println("thread_list 配置有误~")
 		golog.Error("cfg", "inits_serf", fmt.Sprintf("%s", err), 0)
 		return
 	}
