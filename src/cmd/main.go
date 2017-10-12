@@ -104,9 +104,9 @@ func NewMysqlbenchResFromcfg(c *cfg.Gbh_cfg) map[string][]*datahandle.MysqlSysbe
 	for _, v := range c.Servers {
 		for index, cmd := range v.Cmd_list {
 			var t []*datahandle.MysqlSysbenchResult
-
+			list_cmd := []string{}
 			rt_name := v.Server_name + "_cmd" + fmt.Sprintf("%d", index+1)
-			list_cmd := strings.Split(cmd, " ")[:1]
+			list_cmd = strings.Split(cmd, " ")[:1]
 			list_cmd = append(list_cmd, "--mysql-host="+v.Mysql_host)
 			list_cmd = append(list_cmd, "--mysql-user="+v.Mysql_user)
 			list_cmd = append(list_cmd, "--mysql-password="+v.Mysql_password)
@@ -116,23 +116,14 @@ func NewMysqlbenchResFromcfg(c *cfg.Gbh_cfg) map[string][]*datahandle.MysqlSysbe
 			list_cmd = append(list_cmd, "--db-driver="+v.DB_Driver)
 			list_cmd = append(list_cmd, "--tables="+fmt.Sprintf("%d", v.Tables))
 			list_cmd = append(list_cmd, "--table_size="+fmt.Sprintf("%d", v.Table_size))
-			/*list_cmd[1] = "--mysql-host=" + v.Mysql_host
-			list_cmd[2] ="--mysql-user=" + v.Mysql_user
-			list_cmd[3] = "--mysql-password=" + v.Mysql_password
-			list_cmd[4] = "--mysql-db=" + v.Mysql_db
-			list_cmd[5] = "--mysql-port=" + fmt.Sprintf("%d", v.Mysql_port)
-			list_cmd[6] = "--time=" + fmt.Sprintf("%d", v.Bench_time)
-			list_cmd[7] = "--db-driver=" + v.DB_Driver
-			list_cmd[8] = "--tables=" + fmt.Sprintf("%d", v.Tables)
-			list_cmd[9] = "--table_size=" + fmt.Sprintf("%d", v.Table_size)*/
 			for _, thread := range c.Thread_list {
 				lt := new(datahandle.MysqlSysbenchResult)
 				lt.Abtime = v.Bench_time
-				list_cmd[10] = " --threads=" + fmt.Sprintf("%d", thread)
+				tmp_command := append(list_cmd, " --threads="+fmt.Sprintf("%d", thread))
 				for _, other := range strings.Split(cmd, " ")[1:] {
-					list_cmd = append(list_cmd, other)
+					tmp_command = append(tmp_command, other)
 				}
-				lt.Command = strings.Join(list_cmd, " ")
+				lt.Command = strings.Join(tmp_command, " ")
 				t = append(t, lt)
 			}
 			rt[rt_name] = t
