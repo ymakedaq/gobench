@@ -89,8 +89,10 @@ func NewcommandFromcfg(c *cfg.Gbh_cfg) map[string][]string {
 			list_cmd[5] = "--mysql-port=" + fmt.Sprintf("%d", v.Mysql_port)
 			list_cmd[6] = "--time=" + fmt.Sprintf("%d", v.Bench_time)
 			list_cmd[7] = "--db-driver=" + v.DB_Driver
+			list_cmd[8] = "--tables=" + fmt.Sprintf("%d", v.Tables)
+			list_cmd[9] = "--table_size=" + fmt.Sprintf("%d", v.Table_size)
 			for _, thread := range c.Thread_list {
-				list_cmd[8] = " --threads=" + fmt.Sprintf("%d", thread)
+				list_cmd[10] = " --threads=" + fmt.Sprintf("%d", thread)
 				t = append(t, strings.Join(list_cmd, " "))
 			}
 			rt[rt_name] = t

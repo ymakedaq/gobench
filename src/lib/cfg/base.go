@@ -27,6 +27,8 @@ type bench_service struct {
 	Mysql_port     int
 	Mysql_db       string
 	Mysql_password string
+	Tables         int
+	Table_size     int
 	Bench_time     int //压测时间 s
 	DB_Driver      string
 	Cmd_list       []string // 压测命令
@@ -89,6 +91,10 @@ func (this *Gbh_cfg) Init_self() {
 					t_server.DB_Driver, _ = cfg.String(s_name, items)
 				case items == "time":
 					t_server.Bench_time, _ = cfg.Int(s_name, items)
+				case items == "tables":
+					t_server.Tables, _ = cfg.Int(s_name, items)
+				case items == "table_size":
+					t_server.Table_size, _ = cfg.Int(s_name, items)
 				case validcmd.MatchString(items):
 					cmd, _ := cfg.String(s_name, items)
 					t_server.Cmd_list = append(t_server.Cmd_list, cmd)

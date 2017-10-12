@@ -151,12 +151,12 @@ func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 		return nil, err
 	}
 	h.Endtime = time.Now().Unix()
-	rsp, err := h.CommandCleanup(h.Command)
-	if err != nil {
-		fmt.Println("Clean up Fail!")
-		return nil, err
-	}
-	fmt.Println(rsp)
+	/*	rsp, err := h.CommandCleanup(h.Command)
+		if err != nil {
+			fmt.Println("Clean up Fail!")
+			return nil, err
+		}
+		fmt.Println(rsp) */
 	return h, nil
 }
 
