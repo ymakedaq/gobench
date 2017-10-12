@@ -22,6 +22,8 @@ func CommandExecResultBytes(command string) ([]byte, error) {
 	opBytes, err := ioutil.ReadAll(stdout)
 	opError, err := ioutil.ReadAll(stderr)
 	if err != nil {
+		fmt.Println("shell StdOut:", string(opError))
+		fmt.Println("shell StdError:", string(opError))
 		golog.Error("command", "command", fmt.Sprintf("Execue %s Fail!", err), 0)
 		return nil, err
 	}

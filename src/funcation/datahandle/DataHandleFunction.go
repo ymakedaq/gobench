@@ -1,11 +1,10 @@
 package datahandle
 
 import (
-	"errors"
 	"fmt"
+	"funcation/commandhandle"
 	"funcation/golog"
-	"io/ioutil"
-	"os/exec"
+
 	"strconv"
 	"strings"
 	"time"
@@ -145,16 +144,33 @@ func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 	if err != nil {
 		golog.Error("datahandler", "datahandler", fmt.Sprintf("%s", err), 0)
 	}
-	err = h.CommandExec()
+	out_byte, err := commandhandle.CommandExecResultBytes(h.Command)
+	h.DealBytes(out_byte)
 	if err != nil {
 		golog.Error("datahandle", "datahandle", fmt.Sprintf("%s", err), 0)
 		return nil, err
 	}
 	h.Endtime = time.Now().Unix()
+	rsp, err := h.CommandCleanup(h.Command)
+	if err != nil {
+		fmt.Println("Clean up Fail!")
+		return nil, err
+	}
+	fmt.Println(rsp)
 	return h, nil
 }
 
-func (this *MysqlSysbenchResult) CommandExec() error {
+func (this *MysqlSysbenchResult) CommandCleanup(command string) (string, error) {
+	clean_up := strings.Replace(command, "run", "cleanup", 1)
+	output, err := commandhandle.CommandExecResultBytes(clean_up)
+	if err != nil {
+		return string(output), err
+	}
+	return string(output), nil
+}
+
+/*
+func (this *MysqlSysbenchResult) CommandExec() ([]byte, error) {
 	cmd := exec.Command("sh", "-c", `"`+this.Command+`"`)
 	stdout, _ := cmd.StdoutPipe()
 	stderr, _ := cmd.StderrPipe()
@@ -162,25 +178,24 @@ func (this *MysqlSysbenchResult) CommandExec() error {
 	defer stdout.Close()
 	if err := cmd.Start(); err != nil {
 		golog.Error("datahandle", "datahandle", "执行命令出错", 0)
-		return err
+		return []byte{}, err
 	}
 
 	opBytes, err := ioutil.ReadAll(stdout)
 	opError, err := ioutil.ReadAll(stderr)
 	if err != nil {
 		golog.Error("datahandler", "datahandler", "Read stdout Fail", 0)
-		return err
+		return []byte{}, err
 	}
 	if len(opError) > 0 {
-		return errors.New(string(opError))
 		fmt.Println("shell StdOut:", string(opError))
 		fmt.Println("shell StdError:", string(opError))
 		golog.Error("datahandler", "datahandler", string(opError), 0)
+		return opError, errors.New(string(opError))
 	}
-	this.DealBytes(opBytes)
-	return nil
-
-}
+	//	this.DealBytes(opBytes)
+	return opBytes, nil
+}*/
 
 /*func (this *MysqlSysbenchResult) RunAbtest() {
 	Rres, err := CommandExecResultBytes(this.Command)
