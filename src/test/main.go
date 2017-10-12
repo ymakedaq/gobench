@@ -252,7 +252,7 @@ var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
 
 func main() {
 	b := [5]int{1, 2, 2, 3, 5}
-	fmt.Println(b[1:])
+	fmt.Println(b[:1])
 
 }
 
@@ -263,8 +263,8 @@ func commandfromfile(c *cfg.Gbh_cfg) map[string][]string {
 		for index, cmd := range v.Cmd_list {
 			var t []string
 			rt_name := v.Server_name + "_cmd" + fmt.Sprintf("%d", index+1)
-			list_cmd := strings.Split(cmd, " ")
-			list_cmd[1] = "--mysql-host=" + v.Mysql_host
+			list_cmd := strings.Split(cmd, " ")[:1]
+			list_cmd = append(list_cmd, "--mysql-host="+v.Mysql_host)
 			list_cmd[2] = "--mysql-user=" + v.Mysql_user
 			list_cmd[3] = "--mysql-password=" + v.Mysql_password
 			list_cmd[4] = "--mysql-db=" + v.Mysql_db
