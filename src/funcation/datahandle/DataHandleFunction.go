@@ -40,7 +40,7 @@ type MysqlSysbenchResult struct {
 /*
 *  获取得到执行的命令的时候，获取其中的一些相关参数
  */
-
+/*
 func (this *MysqlSysbenchResult) CommandMarksomeFlag(commad string) error {
 
 	this.Command = commad
@@ -72,7 +72,7 @@ func (this *MysqlSysbenchResult) CommandMarksomeFlag(commad string) error {
 
 	}
 	return nil
-}
+}*/
 
 func (this *MysqlSysbenchResult) DealBytes(barry []byte) {
 	var Btmp []uint8
@@ -136,6 +136,7 @@ func FloatString(a string) string {
 
 }
 
+/*
 func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 	h := new(MysqlSysbenchResult)
 	h.Starttime = time.Now().Unix()
@@ -155,13 +156,13 @@ func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 			fmt.Println("Clean up Fail!")
 			return nil, err
 		}
-		fmt.Println(rsp) */
+		fmt.Println(rsp)
 	return h, nil
-}
+}*/
 
 func (this *MysqlSysbenchResult) SysbenchRun() error {
 	this.Starttime = time.Now().Unix()
-	out_byte, err := commandhandle.CommandExecResultBytes(this.Command)
+	out_byte, err := commandhandle.CommandExecResultBytes(`"` + this.Command + `"`)
 	this.DealBytes(out_byte)
 	if err != nil {
 		golog.Error("datahandle", "datahandle", fmt.Sprintf("%s", err), 0)
