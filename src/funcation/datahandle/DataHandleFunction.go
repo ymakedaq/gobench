@@ -139,7 +139,6 @@ func FloatString(a string) string {
 func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 	h := new(MysqlSysbenchResult)
 	h.Starttime = time.Now().Unix()
-	h.Abtime = 10
 	err := h.CommandMarksomeFlag(command)
 	if err != nil {
 		golog.Error("datahandler", "datahandler", fmt.Sprintf("%s", err), 0)
@@ -158,6 +157,19 @@ func NewMysqlsysbenchRes(command string) (*MysqlSysbenchResult, error) {
 		}
 		fmt.Println(rsp) */
 	return h, nil
+}
+
+func (this *MysqlSysbenchResult) SysbenchRun() error {
+	this.Starttime = time.Now().Unix()
+	out_byte, err := commandhandle.CommandExecResultBytes(this.Command)
+	this.DealBytes(out_byte)
+	if err != nil {
+		golog.Error("datahandle", "datahandle", fmt.Sprintf("%s", err), 0)
+		return err
+	}
+	this.Endtime = time.Now().Unix()
+	return nil
+
 }
 
 func (this *MysqlSysbenchResult) CommandCleanup(command string) (string, error) {

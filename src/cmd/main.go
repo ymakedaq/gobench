@@ -17,9 +17,9 @@ import (
 
 func main() {
 
-	var cdl []string
-	var gblist map[string][]string
-	gblist = make(map[string][]string)
+	//	var cdl []string
+	//var gblist map[string][]string
+	//gblist = make(map[string][]string)
 
 	LOGO := `
 		压测线程数  5, 10, 15, 20, 40, 60, 80, 100, 150, 200, 300, 400, 600, 800, 1000 递进压测
@@ -31,18 +31,14 @@ func main() {
 	golog.GlobalSysLogger = golog.New(logfile_time, golog.Lfile|golog.Ltime|golog.Llevel)
 	setLogLevel(core.Loglevel)
 	defer golog.GlobalSysLogger.Close()
-	cmd := flag.String("c", "", "--sysbench command")
+	//cmd := flag.String("c", "", "--sysbench command")
 	conf_file := flag.String("f", "", "--Conf file")
 	flag.Parse()
 
-	if len(*cmd) >= 1 {
-		cdl = Newcommand(*cmd)
-		gblist["current"] = cdl
-	} else {
-		gcmd := cfg.New_Gbh_cfg(*conf_file)
-		gcmd.Init_self()
-		gblist = NewcommandFromcfg(gcmd)
-	}
+	gcmd := cfg.New_Gbh_cfg(*conf_file)
+	gcmd.Init_self()
+	gblist := NewMysqlbenchResFromcfg(gcmd)
+
 	go core.InitCpu()
 	time.Sleep(1 * time.Second)
 	go core.Collect()
@@ -60,6 +56,7 @@ func init() {
 	CheckInstallsysbench()
 }
 
+/*
 func Newcommand(cmd string) []string {
 	if len(cmd) <= 0 {
 		return []string{}
@@ -99,8 +96,62 @@ func NewcommandFromcfg(c *cfg.Gbh_cfg) map[string][]string {
 		}
 	}
 	return rt
+}*/
+
+func NewMysqlbenchResFromcfg(c *cfg.Gbh_cfg) map[string][]*datahandle.MysqlSysbenchResult {
+	var rt map[string][]*datahandle.MysqlSysbenchResult
+	rt = make(map[string][]*datahandle.MysqlSysbenchResult)
+	for _, v := range c.Servers {
+		for index, cmd := range v.Cmd_list {
+			var t []*datahandle.MysqlSysbenchResult
+			rt_name := v.Server_name + "_cmd" + fmt.Sprintf("%d", index+1)
+			list_cmd := strings.Split(cmd, " ")
+			list_cmd[1] = "--mysql-host=" + v.Mysql_host
+			list_cmd[2] = "--mysql-user=" + v.Mysql_user
+			list_cmd[3] = "--mysql-password=" + v.Mysql_password
+			list_cmd[4] = "--mysql-db=" + v.Mysql_db
+			list_cmd[5] = "--mysql-port=" + fmt.Sprintf("%d", v.Mysql_port)
+			list_cmd[6] = "--time=" + fmt.Sprintf("%d", v.Bench_time)
+			list_cmd[7] = "--db-driver=" + v.DB_Driver
+			list_cmd[8] = "--tables=" + fmt.Sprintf("%d", v.Tables)
+			list_cmd[9] = "--table_size=" + fmt.Sprintf("%d", v.Table_size)
+			for _, thread := range c.Thread_list {
+				var lt *datahandle.MysqlSysbenchResult
+				lt.Abtime = v.Bench_time
+				lt.Command = strings.Join(list_cmd, " ")
+				list_cmd[10] = " --threads=" + fmt.Sprintf("%d", thread)
+				t = append(t)
+			}
+			rt[rt_name] = t
+		}
+	}
+	return rt
 }
 
+func benchwork(res_flname string, cdl []*datahandle.MysqlSysbenchResult) {
+	if len(cdl) <= 0 {
+		fmt.Println("No Command list~")
+		return
+	}
+	resfd, _ := golog.NewFileHandler(res_flname+".txt", os.O_CREATE|os.O_RDWR|os.O_APPEND)
+	for index, v := range cdl {
+		fmt.Println(index, "--start--")
+		fmt.Println(v)
+		err := v.SysbenchRun()
+		if err != nil {
+			fmt.Println(err)
+			return
+		}
+		resfd.Write([]byte(fmt.Sprintln(*v)))
+		fmt.Println(*v)
+	}
+	resfd.Close()
+
+	var mk datahandle.Dreawhtml
+	mk.Newchart(res_flname)
+}
+
+/*
 func benchwork(res_flname string, cdl []string) {
 	if len(cdl) <= 0 {
 		fmt.Println("No Command list~")
@@ -122,7 +173,7 @@ func benchwork(res_flname string, cdl []string) {
 
 	var mk datahandle.Dreawhtml
 	mk.Newchart(res_flname)
-}
+}*/
 
 func CheckInstallsysbench() {
 
