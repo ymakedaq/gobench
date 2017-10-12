@@ -108,7 +108,7 @@ func benchwork(res_flname string, cdl []string) {
 	for index, v := range cdl {
 		fmt.Println(index, "--start--")
 		fmt.Println(v)
-		res, err := datahandle.NewMysqlsysbenchRes(v)
+		res, err := datahandle.NewMysqlsysbenchRes(`"` + v + `"`)
 		if err != nil {
 			fmt.Println(err)
 			return
@@ -125,7 +125,7 @@ func benchwork(res_flname string, cdl []string) {
 func CheckInstallsysbench() {
 
 	var wins string
-	res, err := commandhandle.CommandExecResultBytes("rpm -qa|grep  sysbench")
+	res, err := commandhandle.CommandExecResultBytes(`rpm -qa|grep  sysbench`)
 	if len(res) == 0 || err != nil {
 		fmt.Println("Not Found sysbench!,You Need Install? (Y|N)")
 		fmt.Scanln(&wins)
