@@ -104,6 +104,7 @@ func NewMysqlbenchResFromcfg(c *cfg.Gbh_cfg) map[string][]*datahandle.MysqlSysbe
 	for _, v := range c.Servers {
 		for index, cmd := range v.Cmd_list {
 			var t []*datahandle.MysqlSysbenchResult
+
 			rt_name := v.Server_name + "_cmd" + fmt.Sprintf("%d", index+1)
 			list_cmd := strings.Split(cmd, " ")
 			list_cmd[1] = "--mysql-host=" + v.Mysql_host
@@ -119,6 +120,9 @@ func NewMysqlbenchResFromcfg(c *cfg.Gbh_cfg) map[string][]*datahandle.MysqlSysbe
 				lt := new(datahandle.MysqlSysbenchResult)
 				lt.Abtime = v.Bench_time
 				list_cmd[10] = " --threads=" + fmt.Sprintf("%d", thread)
+				for _, other := range strings.Split(cmd, " ")[1:] {
+					list_cmd = append(list_cmd, other)
+				}
 				lt.Command = strings.Join(list_cmd, " ")
 				t = append(t, lt)
 			}

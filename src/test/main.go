@@ -252,7 +252,7 @@ var validcmd = regexp.MustCompile(`cmd?[0-9]*[0-9]$`)
 
 func main() {
 	b := [5]int{1, 2, 2, 3, 5}
-	fmt.Println(b)
+	fmt.Println(b[1:])
 
 }
 
