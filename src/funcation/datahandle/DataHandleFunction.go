@@ -182,6 +182,15 @@ func (this *MysqlSysbenchResult) CommandCleanup(command string) (string, error) 
 	return string(output), nil
 }
 
+func (this *MysqlSysbenchResult) CommandPrepare(command string) (string, error) {
+	prepare := strings.Replace(command, "run", "cleanup", 1)
+	output, err := commandhandle.CommandExecResultBytes(prepare)
+	if err != nil {
+		return string(output), err
+	}
+	return string(output), nil
+}
+
 /*
 func (this *MysqlSysbenchResult) CommandExec() ([]byte, error) {
 	cmd := exec.Command("sh", "-c", `"`+this.Command+`"`)
