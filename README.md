@@ -1,4 +1,11 @@
 # gobench
+
+
+
+	git clone https://github.com/yuan-make/gobench.git
+	export GOPATH=/dir
+	go  build  -o  gobench
+	
  Sysbench for  mysql create bench html
  
     test.conf 
