@@ -108,6 +108,7 @@ func NewMysqlbenchResFromcfg(c *cfg.Gbh_cfg) map[string][]*datahandle.MysqlSysbe
 			for _, thread := range c.Thread_list {
 				lt := new(datahandle.MysqlSysbenchResult)
 				lt.Abtime = v.Bench_time
+				lt.Thread = thread
 				tmp_command := append(list_cmd, " --threads="+fmt.Sprintf("%d", thread))
 				for _, other := range strings.Split(cmd, " ")[1:] {
 					tmp_command = append(tmp_command, other)
