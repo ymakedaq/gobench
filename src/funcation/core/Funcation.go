@@ -18,6 +18,8 @@ var cpuchain chan *CpuInfo = make(chan *CpuInfo)
 var memchain chan *MemInfoMap = make(chan *MemInfoMap)
 
 func Collect() {
+
+	go DealChain()
 	t := time.NewTicker(AtouchTime * time.Second).C
 
 	for {

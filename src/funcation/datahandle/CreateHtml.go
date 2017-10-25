@@ -43,12 +43,12 @@ func (this *Dreawhtml) Newchart(rfile_name string) {
 		fmt.Println(err)
 		return
 	}
-	cpures, err := SysbenchCpucut(core.CPUFILE)
+	cpures, err := SysbenchCpucut(core.CPUFILE, 2000)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	memres, err := SysbenchCpucut(core.MEMFILE)
+	memres, err := SysbenchCpucut(core.MEMFILE, 2000)
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -161,7 +161,7 @@ func SysbenchResCut(filename string) (map[string]interface{}, error) {
 	return mn, nil
 }
 
-func SysbenchCpucut(filname string) ([][]int64, error) {
+func SysbenchCpucut(filname string, cut_limit int) ([][]int64, error) {
 
 	cr, err := Readfile(filname)
 	if err != nil {
@@ -171,8 +171,9 @@ func SysbenchCpucut(filname string) ([][]int64, error) {
 	cc := *cr
 	size := len(strings.Split(strings.TrimSpace(cc[len(cc)-1]), " "))
 	t := make([][]int64, size)
-	for _, v := range *cr {
-		if len(v) > 0 {
+	cut_step := len(*cr) / cut_limit
+	for i := 0; i < len(cc); i += cut_step {
+		if v := cc[i]; len(v) > 0 {
 
 			for index, value := range strings.Split(strings.TrimSpace(v), " ") {
 				if index == 0 {

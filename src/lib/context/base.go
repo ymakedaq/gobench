@@ -36,7 +36,7 @@ func (this *BaseContext) Start() {
 	go core.InitCpu()
 	time.Sleep(1 * time.Second)
 	go core.Collect()
-	core.DealChain()
+	//core.DealChain()
 	for map_index, _ := range gblist {
 		//benchwork(map_index, gblist[map_index])
 		this.benchwork(map_index, gblist[map_index])

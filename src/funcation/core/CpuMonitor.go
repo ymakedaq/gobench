@@ -211,7 +211,6 @@ func CpuPrepared() bool {
 func CpuMetrics() *CpuInfo {
 	var l CpuInfo
 	if !CpuPrepared() {
-		fmt.Println("hello -world")
 		return nil
 	}
 	t := idleTotal()

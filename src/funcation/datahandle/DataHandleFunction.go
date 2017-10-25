@@ -37,43 +37,6 @@ type MysqlSysbenchResult struct {
 	Execution_time_stddev string
 }
 
-/*
-*  获取得到执行的命令的时候，获取其中的一些相关参数
- */
-/*
-func (this *MysqlSysbenchResult) CommandMarksomeFlag(commad string) error {
-
-	this.Command = commad
-	for _, ok := range strings.Split(this.Command, "--") {
-		if strings.Split(ok, "=")[0] == "threads" {
-			ts := strings.Split(ok, "=")[1]
-			ts = strings.Replace(ts, " ", "", -1)
-			ts = strings.Replace(ts, "\n", "", -1)
-			key, err := strconv.Atoi(ts)
-			if err != nil {
-				fmt.Printf("Cover  %s  Fail!", ts)
-				return err
-			}
-			this.Thread = key
-		}
-
-		if strings.Split(ok, "=")[0] == "time" {
-			ts := strings.Split(ok, "=")[1]
-			ts = strings.Replace(ts, " ", "", -1)
-			ts = strings.Replace(ts, "\n", "", -1)
-			key, err := strconv.Atoi(ts)
-			if err != nil {
-				golog.Error("Datahandler", "datahandler", fmt.Sprintf("Cover %s Fail!", ts), 0)
-				fmt.Printf("Cover  %s  Fail!", ts)
-				return err
-			}
-			this.Abtime = key
-		}
-
-	}
-	return nil
-}*/
-
 func (this *MysqlSysbenchResult) DealBytes(barry []byte) {
 	var Btmp []uint8
 	var BRes [][]uint8
